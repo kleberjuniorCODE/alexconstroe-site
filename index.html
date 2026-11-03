@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit AlexConstroe · Vídeos de obra em 3D com o Claude</title>
+<meta name="description" content="Faça vídeos de obra em 3D, vistos em corte, com o Alex de capacete vermelho. Você conversa com o Claude; ele roteiriza, anima e entrega o vídeo pronto.">
+<link rel="icon" href="img/alex.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<style>
+/* ---------- topo e hero ---------- */
+.hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; padding: 30px 0 70px; }
+.hero h1 { font-size: clamp(38px, 6vw, 66px); line-height: 1; margin: 16px 0 18px; }
+.hero h1 em { font-style: normal; color: var(--vermelho); }
+.hero .sub { font-size: clamp(18px, 2.2vw, 21px); font-weight: 700; color: var(--marrom); max-width: 34ch; margin: 0 0 26px; }
+.hero .acoes { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.preco { font-weight: 800; color: var(--suave); }
+.preco b { font: 700 28px "Fredoka"; color: var(--marrom); }
+.garantia-mini { font-weight: 800; font-size: 15px; margin-top: 14px; color: var(--suave); }
+.celular { position: relative; justify-self: center; width: min(320px, 78vw); aspect-ratio: 9/16; border-radius: 38px; background: #1b120c; padding: 10px;
+  box-shadow: 0 16px 0 rgba(74,44,29,.25); transform: rotate(2.5deg); }
+.celular video, .celular img { width: 100%; height: 100%; object-fit: cover; border-radius: 29px; background: #9fdcff; }
+.celular .alex { position: absolute; width: 112px; height: 112px; left: -56px; bottom: 40px; border-radius: 50%; border: 6px solid #fff; box-shadow: 0 8px 0 rgba(74,44,29,.2); transform: rotate(-8deg); }
+
+/* ---------- faixas ---------- */
+.faixa { padding: 70px 0; }
+.faixa.creme { background: var(--creme); }
+.faixa.azul { background: var(--azul); color: #fff; }
+.titulo { text-align: center; max-width: 720px; margin: 0 auto 38px; }
+.titulo h2 { font-size: clamp(30px, 4.5vw, 46px); line-height: 1.05; margin: 12px 0 10px; }
+.titulo p { font-weight: 700; color: var(--suave); margin: 0; font-size: 18px; }
+.azul .titulo p { color: #d6e3ff; }
+
+.passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.passo { background: #fff; border-radius: 26px; padding: 24px; box-shadow: 0 8px 0 rgba(74,44,29,.12); }
+.passo .n { width: 48px; height: 48px; border-radius: 15px; background: var(--amarelo); display: grid; place-items: center; font: 700 24px "Fredoka"; margin-bottom: 12px; }
+.passo h3 { margin: 0 0 6px; font-size: 22px; }
+.passo p { margin: 0; font-weight: 600; color: var(--suave); }
+
+.itens { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.item { background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.18); border-radius: 22px; padding: 22px; }
+.item .ic { font-size: 30px; }
+.item h3 { margin: 8px 0 4px; font-size: 21px; }
+.item p { margin: 0; color: #dfe8ff; font-weight: 600; }
+
+.galeria { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.galeria img { border-radius: 20px; aspect-ratio: 9/16; object-fit: cover; box-shadow: 0 8px 0 rgba(74,44,29,.15); background: #9fdcff; }
+
+.precisa { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.precisa div { background: #fff; border-radius: 22px; padding: 22px; box-shadow: 0 8px 0 rgba(74,44,29,.12); }
+.precisa b { display: block; font: 700 22px "Fredoka"; margin-bottom: 4px; }
+.precisa span { font-weight: 600; color: var(--suave); }
+
+.pra { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.pra .card h3 { margin: 0 0 12px; font-size: 24px; }
+.pra ul { margin: 0; padding-left: 0; list-style: none; }
+.pra li { padding: 7px 0 7px 34px; position: relative; font-weight: 700; }
+.pra li::before { position: absolute; left: 0; top: 5px; width: 24px; height: 24px; border-radius: 8px; display: grid; place-items: center; font-weight: 900; font-size: 14px; color: #fff; }
+.sim li::before { content: "✓"; background: #2e9d48; }
+.nao li::before { content: "✕"; background: var(--vermelho); }
+
+/* ---------- 3 planos: o do meio é o destaque ---------- */
+.planos { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 18px; align-items: center; max-width: 1040px; margin: 0 auto; }
+.plano { position: relative; background: #fff; border-radius: 28px; padding: 28px 24px; text-align: center; box-shadow: 0 8px 0 rgba(74,44,29,.12); display: flex; flex-direction: column; }
+.plano h3 { margin: 0; font-size: 26px; }
+.plano .valor { margin: 6px 0 4px; font-weight: 800; color: var(--suave); }
+.plano .valor b { font: 700 40px "Fredoka"; color: var(--marrom); }
+.plano .valor small { display: block; font-size: 14px; }
+.plano ul { text-align: left; margin: 16px 0 22px; padding: 0; list-style: none; flex: 1; }
+.plano li { padding: 6px 0 6px 28px; position: relative; font-weight: 700; }
+.plano li::before { content: "✓"; position: absolute; left: 0; color: #2e9d48; font-weight: 900; }
+.plano li.x { color: #b9a99c; text-decoration: line-through; }
+.plano li.x::before { content: "✕"; color: #c9b9ac; }
+.plano .btn { width: 100%; }
+.plano.destaque { background: var(--creme); border: 5px solid var(--vermelho); padding: 40px 26px 32px; box-shadow: 0 14px 0 rgba(232,38,43,.25); transform: scale(1.04); z-index: 1; }
+.plano.destaque .valor b { font-size: 54px; color: var(--vermelho); }
+.plano.destaque .btn { font-size: 21px; padding: 20px; }
+.fita { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); background: var(--vermelho); color: #fff; font: 700 16px "Fredoka"; padding: 8px 18px; border-radius: 999px; white-space: nowrap; }
+.urgencia { max-width: 760px; margin: 0 auto 46px; background: var(--amarelo); border-radius: 22px; padding: 16px 20px; display: grid; gap: 6px; text-align: center; font-weight: 700; }
+.urgencia > b { font: 700 20px "Fredoka"; }
+.relogio { font: 700 28px "Fredoka"; color: var(--vermelho); letter-spacing: .02em; }
+@media (max-width: 860px) {
+  .planos { grid-template-columns: 1fr; max-width: 440px; }
+  .plano.destaque { order: -1; transform: none; margin-top: 20px; }
+}
+.selo-garantia { display: flex; gap: 14px; align-items: center; text-align: left; margin-top: 22px; background: var(--amarelo); border-radius: 18px; padding: 14px 18px; font-weight: 700; }
+.selo-garantia b { font: 700 34px "Fredoka"; color: var(--vermelho); }
+
+.faq { max-width: 760px; margin: 0 auto; }
+.faq details { background: #fff; border-radius: 18px; margin-bottom: 12px; box-shadow: 0 6px 0 rgba(74,44,29,.1); }
+.faq summary { cursor: pointer; padding: 18px 22px; font: 700 19px "Fredoka"; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+.faq summary::after { content: "+"; color: var(--vermelho); font-size: 24px; line-height: 1; }
+.faq details[open] summary::after { content: "–"; }
+.faq p { margin: 0; padding: 0 22px 18px; font-weight: 600; color: var(--suave); }
+
+footer { padding: 30px 0 40px; text-align: center; font-weight: 700; color: var(--suave); font-size: 14px; }
+.aviso { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 140%); background: var(--marrom); color: #fff; padding: 14px 20px; border-radius: 16px; font-weight: 800; transition: transform .25s; z-index: 20; max-width: calc(100% - 32px); text-align: center; }
+.aviso.on { transform: translate(-50%, 0); }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; text-align: center; padding-top: 10px; }
+  .hero .sub { margin-left: auto; margin-right: auto; }
+  .hero .acoes { justify-content: center; }
+  .celular { transform: none; }
+  .celular .alex { width: 84px; height: 84px; left: -20px; }
+  .passos, .precisa, .pra { grid-template-columns: 1fr; }
+  .galeria { grid-template-columns: repeat(2, 1fr); }
+  .topo .btn { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="topo">
+    <a class="marca" href="#"><img src="img/alex.webp" alt="">Alex<b>Constroe</b></a>
+    <a class="btn vermelho peq" data-checkout href="#oferta">Quero o kit</a>
+  </header>
+
+  <section class="hero">
+    <div>
+      <span class="selo">Kit para Claude Code</span>
+      <h1>Vídeos de obra em 3D que <em>prendem até o fim</em>.</h1>
+      <p class="sub">Você conversa com o Claude e o Alex constrói. Roteiro, cenas em 3D, sons, legenda e capa. Sem programar, sem editar vídeo e sem mostrar o rosto.</p>
+      <div class="acoes">
+        <a class="btn vermelho" data-checkout href="#oferta">Quero meu kit agora</a>
+      </div>
+      <p class="garantia-mini">🛡️ 7 dias de garantia · acesso na hora</p>
+    </div>
+    <div class="celular">
+      <video src="media/exemplo.mp4" poster="media/capa.jpg" autoplay muted loop playsinline></video>
+      <img class="alex" src="img/alex.webp" alt="Alex, o mascote">
+    </div>
+  </section>
+</div>
+
+<section class="faixa creme">
+  <div class="wrap">
+    <div class="titulo">
+      <span class="selo">Como funciona</span>
+      <h2>Da ideia ao vídeo pronto, conversando</h2>
+      <p>O kit é uma pasta que você abre no Claude. Ele segue a linha de montagem e você só aprova.</p>
+    </div>
+    <div class="passos">
+      <div class="passo"><div class="n">1</div><h3>Ideia e roteiro</h3><p>Escolha um dos 40 ganchos ou peça novos. O Claude escreve 60 a 90 segundos de narração na fórmula que segura a atenção.</p></div>
+      <div class="passo"><div class="n">2</div><h3>Voz e cenas 3D</h3><p>Você gera a voz no ElevenLabs e arrasta o MP3. O Claude monta a obra em corte, sincronizada palavra por palavra.</p></div>
+      <div class="passo"><div class="n">3</div><h3>Vídeo, capa e legenda</h3><p>Ele confere quadro a quadro, coloca os sons e entrega o MP4 em 1080x1920, com a capa e a legenda do post.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="faixa">
+  <div class="wrap">
+    <div class="titulo">
+      <span class="selo">Feito com o kit</span>
+      <h2>A terra cortada como um bolo</h2>
+      <p>Você vê tudo o que acontece embaixo do chão, em escala real, com o jeitão de brinquedo do Alex.</p>
+    </div>
+    <div class="galeria">
+      <img src="media/cena-1.jpg" alt="Alex acenando no quintal" loading="lazy">
+      <img src="media/cena-2.jpg" alt="Buraco em corte com caixa d'água" loading="lazy">
+      <img src="media/cena-3.jpg" alt="Paredes de concreto armado" loading="lazy">
+      <img src="media/cena-4.jpg" alt="Cisterna cheia com bomba e chuva" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section class="faixa azul">
+  <div class="wrap">
+    <div class="titulo">
+      <span class="selo" style="background:var(--amarelo);color:var(--marrom)">O que vem no kit</span>
+      <h2>Um estúdio de obra inteiro numa pasta</h2>
+      <p>Tudo pronto pra você abrir no Claude e começar hoje.</p>
+    </div>
+    <div class="itens">
+      <div class="item"><div class="ic">🧠</div><h3>O cérebro do Claude</h3><p>Instruções e 8 receitas que levam o Claude da ideia ao post, pedindo sua aprovação nos momentos certos.</p></div>
+      <div class="item"><div class="ic">🏗️</div><h3>Motor 3D detalhado</h3><p>Escala real, terra em camadas com textura, grama, sombras e reflexos, câmera que desliza, etiquetas e legenda no vídeo.</p></div>
+      <div class="item"><div class="ic">👷</div><h3>O Alex animado</h3><p>Anda, acena, aponta, pula, leva susto e comemora. Dá pra mudar a cor do colete ou criar ajudantes.</p></div>
+      <div class="item"><div class="ic">🚜</div><h3>Peças de obra</h3><p>Escavadeira, caminhão, concreto armado, tijolos, canos, tanque, bomba, filtro, casa, árvore e nuvens.</p></div>
+      <div class="item"><div class="ic">💧</div><h3>Efeitos</h3><p>Água subindo, chuva, poeira, rachadura, brilho do "isso é um…" e confete do "parabéns".</p></div>
+      <div class="item"><div class="ic">🔊</div><h3>17 sons próprios</h3><p>Cavar, concreto, água, motor, chuva, pop, whoosh e mais, colocados sozinhos na hora certa.</p></div>
+      <div class="item"><div class="ic">💡</div><h3>Fórmula + 40 ganchos</h3><p>A obra em 5 tempos e 40 ideias prontas, separadas por tema.</p></div>
+      <div class="item"><div class="ic">🎬</div><h3>Vídeo de exemplo</h3><p>A cisterna do Alex completa, com o projeto aberto pra você estudar e copiar.</p></div>
+      <div class="item"><div class="ic">📘</div><h3>Guia em PDF</h3><p>Passo a passo ilustrado, da instalação ao primeiro post.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="faixa creme">
+  <div class="wrap">
+    <div class="titulo">
+      <span class="selo">Você vai precisar</span>
+      <h2>Só três coisas</h2>
+    </div>
+    <div class="precisa">
+      <div><b>Claude Pro</b><span>O Claude Code é quem monta os vídeos. O plano grátis não serve. A partir de US$ 20/mês.</span></div>
+      <div><b>ElevenLabs</b><span>Para a voz da narração. Dá pra testar de graça; o plano comercial é barato.</span></div>
+      <div><b>Um computador</b><span>Windows ou Mac. Não precisa ser computador gamer.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="faixa">
+  <div class="wrap pra">
+    <div class="card sim"><h3>É pra você se…</h3><ul>
+      <li>Quer um perfil de vídeos curtos sem aparecer</li>
+      <li>Não sabe programar nem editar vídeo</li>
+      <li>Gosta de obra, engenharia e curiosidades</li>
+      <li>Quer postar com constância, 3 a 5 vídeos por semana</li>
+    </ul></div>
+    <div class="card nao"><h3>Não é pra você se…</h3><ul>
+      <li>Procura dinheiro rápido sem postar</li>
+      <li>Não vai assinar o Claude Pro</li>
+      <li>Quer vídeos realistas de cinema</li>
+      <li>Só usa celular (precisa de computador)</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="faixa creme" id="oferta">
+  <div class="wrap">
+    <div class="titulo"><span class="selo">Escolha seu plano</span><h2>Comece a postar hoje</h2></div>
+    <div class="urgencia" id="urgencia">
+      <b>🎁 Bônus de lançamento</b>
+      <span>Comprando o <b>Completo</b> até <b data-prazo-txt></b>, você leva o pacote <b>Novos Estilos</b>: vídeos de ciência, sua identidade visual e 3 obras prontas.</span>
+      <div class="relogio" data-relogio></div>
+    </div>
+    <div class="planos">
+      <div class="plano">
+        <h3>Básico</h3>
+        <p class="valor" data-valor="basico"></p>
+        <ul>
+          <li>Kit pro Claude Code</li>
+          <li>Motor 3D, peças, efeitos e 17 sons</li>
+          <li>Guia em PDF</li>
+          <li class="x">40 ganchos prontos</li>
+          <li class="x">Bônus Novos Estilos</li>
+          <li class="x">Suporte</li>
+        </ul>
+        <a class="btn branco" data-plano="basico" href="#oferta">Quero o Básico</a>
+      </div>
+      <div class="plano destaque">
+        <span class="fita">⭐ Mais escolhido</span>
+        <h3>Completo</h3>
+        <p class="valor" data-valor="completo"></p>
+        <ul>
+          <li>Kit pro Claude Code</li>
+          <li>Motor 3D, peças, efeitos e 17 sons</li>
+          <li>Guia em PDF</li>
+          <li>Fórmula + 40 ganchos prontos</li>
+          <li data-so-no-prazo><b>Bônus Novos Estilos</b> (ciência, identidade e 3 obras)</li>
+          <li>Suporte pelo Direct</li>
+          <li>Atualizações do kit</li>
+        </ul>
+        <a class="btn vermelho" data-plano="completo" href="#oferta">Quero o Completo</a>
+      </div>
+      <div class="plano">
+        <h3>Premium</h3>
+        <p class="valor" data-valor="premium"></p>
+        <ul>
+          <li>Tudo do Completo</li>
+          <li><b>Comunidade no Telegram</b> por 12 meses</li>
+          <li>Ideias dos membros e troca de vídeos</li>
+          <li>Novidades sobre nichos em alta</li>
+        </ul>
+        <a class="btn laranja" data-plano="premium" href="#oferta">Quero o Premium</a>
+      </div>
+    </div>
+    <div class="selo-garantia" style="max-width:640px;margin:26px auto 0"><b>7</b><span>dias de garantia em todos os planos. Se não gostar, peça o reembolso pela Kiwify e recebe tudo de volta.</span></div>
+  </div>
+</section>
+
+<section class="faixa">
+  <div class="wrap">
+    <div class="titulo"><span class="selo">Dúvidas</span><h2>Perguntas frequentes</h2></div>
+    <div class="faq">
+      <details><summary>Preciso saber programar?</summary><p>Não. Você conversa em português com o Claude. Ele escreve todo o código e só mostra imagens e o vídeo pra você aprovar.</p></details>
+      <details><summary>Quanto tempo leva um vídeo?</summary><p>O primeiro demora mais por causa da instalação. Depois, algumas horas do começo ao fim, a maior parte esperando o Claude trabalhar e o vídeo renderizar.</p></details>
+      <details><summary>Funciona no Windows?</summary><p>Sim. O kit funciona no Windows e no Mac, e o Claude instala o que faltar no seu computador.</p></details>
+      <details><summary>Os vídeos são meus?</summary><p>Sim. Tudo que você criar com o kit é seu e pode ser postado e monetizado. O kit em si é de uso pessoal e não pode ser revendido.</p></details>
+      <details><summary>Posso mudar o personagem?</summary><p>Pode. Dá pra pedir outra cor de colete, um ajudante ou um personagem novo. O Claude ajusta e mostra pra você aprovar.</p></details>
+      <details><summary>Como recebo o kit?</summary><p>Logo depois do pagamento você recebe por e-mail o acesso à área de membros da Kiwify, com o kit (.zip) e o guia em PDF.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© AlexConstroe · Dúvidas: Direct do <b>@alexconstroe</b> no Instagram</div>
+</footer>
+<div class="aviso" id="aviso">Esse plano abre em breve. O Completo já está disponível! 🏗️</div>
+
+<script>
+// ====== CONFIGURAÇÃO ======
+// Cole aqui o link do checkout da Kiwify quando criar o produto:
+const KIWIFY_URL = "https://pay.kiwify.com.br/qmVVYji";
+// Preço que aparece na página (deixe vazio pra não mostrar):
+const PRECO = "R$ 67";
+// Os 3 planos. Link vazio = o botão avisa "em breve" (crie a oferta na Kiwify e cole o link aqui).
+const PLANOS = {
+  basico:   { preco: "R$ 37",  link: "https://pay.kiwify.com.br/aj6JUm4" },
+  completo: { preco: "R$ 67",  link: KIWIFY_URL },
+  premium:  { preco: "R$ 197", link: "https://pay.kiwify.com.br/Y5yeLbq", nota: "acesso de 12 meses" },
+};
+// Bônus de lançamento: até essa data o Completo leva o pacote Novos Estilos.
+// Depois dela a faixa e a linha do bônus somem sozinhas. Tire o bônus da oferta na Kiwify no mesmo dia.
+const PRAZO_BONUS = "2026-11-08T23:59:59-03:00";
+// ==========================
+
+document.querySelectorAll("[data-preco]").forEach(el => {
+  if (PRECO) el.innerHTML = `por apenas <b>${PRECO}</b>`; else el.remove();
+});
+document.querySelectorAll("[data-valor]").forEach(el => {
+  const p = PLANOS[el.dataset.valor];
+  el.innerHTML = `<b>${p.preco}</b><small>${p.nota || "pagamento único"}</small>`;
+});
+document.querySelectorAll("[data-plano]").forEach(a => {
+  const link = PLANOS[a.dataset.plano].link;
+  if (link) a.href = link; else a.setAttribute("data-checkout", "");
+});
+
+const prazo = new Date(PRAZO_BONUS);
+const faixa = document.getElementById("urgencia");
+document.querySelectorAll("[data-prazo-txt]").forEach(el => {
+  el.textContent = prazo.toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "2-digit" }) + " às 23h59";
+});
+function relogio() {
+  const falta = prazo - Date.now();
+  if (falta <= 0) {
+    faixa.remove();
+    document.querySelectorAll("[data-so-no-prazo]").forEach(el => el.remove());
+    return;
+  }
+  const d = Math.floor(falta / 864e5), h = Math.floor(falta / 36e5) % 24, m = Math.floor(falta / 6e4) % 60, s = Math.floor(falta / 1e3) % 60;
+  const dd = n => String(n).padStart(2, "0");
+  document.querySelector("[data-relogio]").textContent = `${d}d ${dd(h)}h ${dd(m)}m ${dd(s)}s`;
+  setTimeout(relogio, 1000);
+}
+relogio();
+
+document.querySelectorAll("[data-checkout]").forEach(a => {
+  if (!a.dataset.plano) return; // botões do topo rolam até os planos (a pessoa precisa ver os 3)
+  a.addEventListener("click", e => {
+    if (a.closest("#oferta")) e.preventDefault();
+    const aviso = document.getElementById("aviso");
+    aviso.classList.add("on");
+    setTimeout(() => aviso.classList.remove("on"), 2600);
+  });
+});
+</script>
+</body>
+</html>

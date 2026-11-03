@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Seu kit · AlexConstroe</title>
+<link rel="icon" href="img/alex.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<style>
+.wrap { max-width: 760px; }
+.card { margin: 10px 0 40px; position: relative; }
+.alex { position: absolute; right: 26px; top: -46px; width: 104px; height: 104px; border-radius: 50%; border: 6px solid var(--amarelo); box-shadow: 0 6px 0 rgba(74,44,29,.18); }
+.ok { width: 58px; height: 58px; border-radius: 18px; background: #2e9d48; color: #fff; display: grid; place-items: center; font-size: 30px; font-weight: 900; }
+h1 { font-size: clamp(34px, 7vw, 52px); line-height: 1; margin: 16px 0 12px; }
+h1 em { font-style: normal; color: var(--vermelho); }
+h2 { font-size: 26px; margin: 30px 0 12px; }
+p { font-weight: 700; color: var(--suave); margin: 0 0 10px; }
+.dl { display: grid; gap: 14px; margin: 24px 0; }
+.dl .btn { justify-content: space-between; text-align: left; }
+.dl small { font-weight: 800; opacity: .85; font-size: 14px; }
+.passo { display: grid; grid-template-columns: 46px 1fr; gap: 14px; align-items: start; margin: 12px 0; }
+.passo .n { width: 46px; height: 46px; border-radius: 14px; background: var(--amarelo); display: grid; place-items: center; font: 700 22px "Fredoka"; }
+.passo p { margin: 9px 0 0; color: var(--marrom); }
+.fala { background: #fff; border: 3px dashed var(--laranja); border-radius: 16px; padding: 12px 16px; font-weight: 900; margin-top: 8px; }
+.nota { font-size: 14px; margin-top: 26px; border-top: 2px solid rgba(74,44,29,.1); padding-top: 18px; }
+@media (max-width: 560px) { .alex { width: 76px; height: 76px; right: 16px; top: -30px; } .card { padding: 26px 20px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="topo"><span class="marca"><img src="img/alex.webp" alt="">Alex<b>Constroe</b></span></header>
+
+  <main class="card">
+    <img class="alex" src="img/alex.webp" alt="Alex">
+    <div class="ok">✓</div>
+    <h1>Pagamento confirmado. <em>Bora construir!</em></h1>
+    <p>O kit completo (.zip) e o guia em PDF estão na sua área de membros da Kiwify. O link de acesso também chegou no seu e-mail.</p>
+
+    <div class="dl">
+      <a class="btn laranja" id="area" href="#" target="_blank" rel="noopener">Acessar meu kit <small>área de membros</small></a>
+    </div>
+    <p style="font-size:14px">Não achou o e-mail? Olhe no spam ou na aba Promoções e procure por "Kiwify".</p>
+
+    <h2>Comece em 3 passos</h2>
+    <div class="passo"><span class="n">1</span><p>Instale o app do <b>Claude</b> (claude.ai/download) e entre com sua conta paga (Pro ou maior).</p></div>
+    <div class="passo"><span class="n">2</span><p>Descompacte o kit, por exemplo em <code>Documentos/kit-alexconstroe</code>.</p></div>
+    <div class="passo"><span class="n">3</span><div><p>No Claude, abra a aba <b>Code</b>, escolha a pasta do kit e escreva:</p><div class="fala">"Oi, quero fazer meu primeiro vídeo."</div></div></div>
+
+    <p class="nota">Dúvidas e suporte: Direct do <b>@alexconstroe</b> no Instagram. Você tem 7 dias de garantia: se não gostar, peça o reembolso pela Kiwify.<br>Os vídeos que você criar são seus. O kit é de uso pessoal e não pode ser revendido.</p>
+  </main>
+</div>
+<script>
+// ====== CONFIGURAÇÃO ======
+// Cole aqui o link da área de membros do produto na Kiwify:
+const AREA_KIWIFY = "https://members.kiwify.com/?club=c8cb5c30-b7ec-4db7-abe7-2076ce64f76f";
+// ==========================
+const area = document.getElementById("area");
+if (AREA_KIWIFY) area.href = AREA_KIWIFY; else area.style.display = "none";
+</script>
+</body>
+</html>
