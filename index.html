@@ -7,14 +7,71 @@
 <meta name="description" content="Faça vídeos de obra em 3D, vistos em corte, com o Alex de capacete vermelho. Você conversa com o Claude; ele roteiriza, anima e entrega o vídeo pronto. De bônus, 3 kits novos: Universo, Ciência e Bicho em Corte.">
 <meta property="og:title" content="Kit AlexConstroe · Vídeos de obra em 3D com o Claude">
 <meta property="og:description" content="Você conversa, o Claude faz o vídeo. Sem programar, sem editar e sem mostrar o rosto.">
-<meta property="og:image" content="media/capa.jpg">
-<link rel="icon" href="img/alex.webp">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css">
-<link rel="preload" as="image" href="media/capa.jpg">
+<meta property="og:image" content="https://alexconstroe.com.br/media/capa.jpg">
+<link rel="icon" href="img/alex-p.webp">
+<link rel="preload" as="image" href="media/capa.webp" fetchpriority="high">
+<link rel="preload" as="font" type="font/woff2" href="fontes/fredoka.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fontes/nunito.woff2" crossorigin>
 <style>
+@font-face { font-family: "Fredoka"; font-style: normal; font-weight: 600 700; font-display: swap; src: url(fontes/fredoka.woff2) format("woff2"); }
+@font-face { font-family: "Nunito"; font-style: normal; font-weight: 600 900; font-display: swap; src: url(fontes/nunito.woff2) format("woff2"); }
+/* Identidade AlexConstroe: amarelo de fundo, capacete vermelho, camisa azul, colete laranja, bigode marrom */
+:root {
+  --amarelo: #FFE600;
+  --amarelo-d: #E8CF00;
+  --vermelho: #E8262B;
+  --vermelho-d: #B5161B;
+  --azul: #1E5BD8;
+  --azul-d: #123F9E;
+  --laranja: #FF8A1A;
+  --laranja-d: #D96A00;
+  --marrom: #4A2C1D;
+  --pele: #F8E1C6;
+  --creme: #FFFBEA;
+  --branco: #FFFFFF;
+  --suave: #6E5747;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: "Nunito", system-ui, sans-serif;
+  color: var(--marrom);
+  background: var(--amarelo);
+  line-height: 1.5;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+h1, h2, h3, .marca { font-family: "Fredoka", "Nunito", sans-serif; font-weight: 700; letter-spacing: -.01em; }
+
+/* Topo */
+.topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 0; }
+.marca { display: flex; align-items: center; gap: 10px; font-size: 24px; text-decoration: none; }
+.marca img { width: 48px; height: 48px; border-radius: 50%; border: 3px solid var(--vermelho); background: var(--amarelo); }
+.marca b { color: var(--vermelho-d); }
+
+/* Botões em relevo, estilo brinquedo */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 18px 28px; border-radius: 20px; border: 0; cursor: pointer;
+  font: 900 19px "Nunito", sans-serif; text-decoration: none; text-align: center;
+  transition: transform .1s, box-shadow .1s;
+}
+.btn:active { transform: translateY(4px); }
+.btn.vermelho { background: var(--vermelho); color: #fff; box-shadow: 0 7px 0 var(--vermelho-d); }
+.btn.vermelho:active { box-shadow: 0 3px 0 var(--vermelho-d); }
+.btn.laranja { background: #d96a00; color: #fff; box-shadow: 0 7px 0 #a85200; }
+.btn.branco { background: #fff; color: var(--marrom); box-shadow: 0 7px 0 rgba(74,44,29,.18); }
+.btn.peq { padding: 11px 18px; font-size: 15px; border-radius: 14px; box-shadow: 0 5px 0 var(--vermelho-d); }
+
+.card { background: var(--creme); border-radius: 32px; padding: 32px; box-shadow: 0 10px 0 rgba(74,44,29,.15); }
+.selo { display: inline-block; background: var(--azul); color: #fff; border-radius: 99px; padding: 6px 14px; font-weight: 900; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+code { font-family: ui-monospace, Consolas, monospace; background: rgba(74,44,29,.08); padding: 2px 7px; border-radius: 7px; font-size: .9em; }
+
+/* esconde o selo "Powered by Netlify" que o plano grátis injeta */
+#nl-badge-frame { display: none !important; }
+
+
 /* ---------- topo e hero ---------- */
 .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; padding: 30px 0 70px; }
 .hero h1 { font-size: clamp(38px, 6vw, 66px); line-height: 1; margin: 16px 0 18px; }
@@ -29,7 +86,7 @@
   box-shadow: 0 16px 0 rgba(74,44,29,.25); transform: rotate(2.5deg); }
 .celular video, .celular img { width: 100%; height: 100%; object-fit: cover; border-radius: 29px; background: #9fdcff; }
 .celular .alex { position: absolute; width: 112px; height: 112px; left: -56px; bottom: 40px; border-radius: 50%; border: 6px solid #fff; box-shadow: 0 8px 0 rgba(74,44,29,.2); transform: rotate(-8deg); }
-.celular .presente { position: absolute; right: -34px; top: 34px; background: var(--vermelho); color: #fff; font: 700 17px/1.1 "Fredoka"; padding: 12px 14px; border-radius: 18px; text-align: center;
+.celular .presente { position: absolute; right: -34px; top: 34px; background: var(--vermelho-d); color: #fff; font: 700 17px/1.1 "Fredoka"; padding: 12px 14px; border-radius: 18px; text-align: center;
   box-shadow: 0 6px 0 var(--vermelho-d); transform: rotate(6deg); animation: balanca 2.6s ease-in-out infinite; text-decoration: none; }
 .celular .presente small { display: block; font: 800 12px "Nunito"; opacity: .9; }
 @keyframes balanca { 50% { transform: rotate(-3deg) translateY(-4px); } }
@@ -54,12 +111,12 @@
 .item { background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.18); border-radius: 22px; padding: 22px; }
 .item .ic { font-size: 30px; }
 .item h3 { margin: 8px 0 4px; font-size: 21px; }
-.item p { margin: 0; color: #dfe8ff; font-weight: 600; }
+.item p { margin: 0; color: #fff; font-weight: 600; }
 
 /* ---------- provas: vídeos de verdade ---------- */
 .videos { display: grid; grid-template-columns: repeat(2, minmax(0, 300px)); justify-content: center; gap: 36px; margin-bottom: 40px; }
 .tela { position: relative; aspect-ratio: 9/16; border-radius: 32px; background: #1b120c; padding: 8px; box-shadow: 0 12px 0 rgba(74,44,29,.22); }
-.tela video { width: 100%; height: 100%; object-fit: cover; border-radius: 25px; background: #9fdcff; display: block; }
+.videos .tela video { pointer-events: none; } .tela video { width: 100%; height: 100%; object-fit: cover; border-radius: 25px; background: #9fdcff; display: block; }
 .tela .nome { position: absolute; left: 50%; bottom: -16px; transform: translateX(-50%); background: var(--amarelo); border-radius: 99px; padding: 6px 16px; font: 700 16px "Fredoka"; white-space: nowrap; box-shadow: 0 4px 0 rgba(74,44,29,.18); }
 .tela:nth-child(1) { transform: rotate(-2deg); }
 .tela:nth-child(2) { transform: rotate(2deg); }
@@ -87,8 +144,8 @@
 .kit h3 { margin: 10px 0 4px; font-size: 24px; }
 .kit p { margin: 0; font-weight: 600; color: var(--suave); font-size: 16px; }
 .kit.espaco .estilo { background: #6b3fd8; }
-.kit.ciencia .estilo { background: #e8262b; }
-.kit.animais .estilo { background: #2e9d48; }
+.kit.ciencia .estilo { background: #c41d22; }
+.kit.animais .estilo { background: #237a38; }
 .bonus-nota { text-align: center; margin: 34px auto 0; font-weight: 800; color: #cfd3ff; max-width: 62ch; }
 
 .precisa { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -115,8 +172,8 @@
 .plano ul { text-align: left; margin: 16px 0 22px; padding: 0; list-style: none; flex: 1; }
 .plano li { padding: 6px 0 6px 28px; position: relative; font-weight: 700; }
 .plano li::before { content: "✓"; position: absolute; left: 0; color: #2e9d48; font-weight: 900; }
-.plano li.x { color: #b9a99c; text-decoration: line-through; }
-.plano li.x::before { content: "✕"; color: #c9b9ac; }
+.plano li.x { color: #7a6555; text-decoration: line-through; }
+.plano li.x::before { content: "✕"; color: #a8968a; }
 .plano li.bonus { background: var(--amarelo); border-radius: 12px; padding: 8px 10px 8px 34px; margin: 6px 0; }
 .plano li.bonus::before { content: "🎁"; left: 8px; top: 8px; }
 .plano .btn { width: 100%; }
@@ -130,7 +187,7 @@
 .selo-bonus big { display: block; font-size: 26px; color: var(--vermelho); }
 .selo-bonus small { display: block; font: 900 10px "Nunito"; text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
 @keyframes balanca2 { 50% { transform: rotate(4deg) scale(1.05); } }
-.fita { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); background: var(--vermelho); color: #fff; font: 700 16px "Fredoka"; padding: 8px 18px; border-radius: 999px; white-space: nowrap; }
+.fita { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); background: var(--vermelho-d); color: #fff; font: 700 16px "Fredoka"; padding: 8px 18px; border-radius: 999px; white-space: nowrap; }
 .urgencia { max-width: 760px; margin: 0 auto 46px; background: var(--amarelo); border-radius: 22px; padding: 16px 20px; display: grid; gap: 6px; text-align: center; font-weight: 700; }
 .urgencia > b { font: 700 20px "Fredoka"; }
 .relogio { font: 700 28px "Fredoka"; color: var(--vermelho); letter-spacing: .02em; }
@@ -193,7 +250,7 @@ footer { padding: 30px 0 40px; text-align: center; font-weight: 700; color: var(
 
 <div class="wrap">
   <header class="topo">
-    <a class="marca" href="#"><img src="img/alex.webp" alt="">Alex<b>Constroe</b></a>
+    <a class="marca" href="#"><img src="img/alex-p.webp" width="120" height="120" alt="">Alex<b>Constroe</b></a>
     <a class="btn vermelho peq" href="#oferta">Quero o kit</a>
   </header>
 
@@ -213,8 +270,8 @@ footer { padding: 30px 0 40px; text-align: center; font-weight: 700; color: var(
       <p class="garantia-mini">🛡️ 7 dias de garantia · acesso na hora · 🎁 3 kits de bônus</p>
     </div>
     <div class="celular">
-      <video src="media/exemplo.mp4" poster="media/capa.jpg" autoplay muted loop playsinline></video>
-      <img class="alex" src="img/alex.webp" alt="Alex, o mascote">
+      <video data-src="media/topo.mp4" poster="media/capa.webp" autoplay muted loop playsinline preload="none" width="432" height="768"></video>
+      <img class="alex" src="img/alex-p.webp" width="120" height="120" alt="Alex, o mascote">
       <a class="presente" href="#bonus">+3 kits<small>de bônus 🎁</small></a>
     </div>
   </section>
@@ -225,17 +282,17 @@ footer { padding: 30px 0 40px; text-align: center; font-weight: 700; color: var(
     <div class="titulo">
       <span class="selo">Feito com o kit</span>
       <h2>A terra cortada <em>como um bolo</em></h2>
-      <p>Você vê tudo o que acontece embaixo do chão, em escala real, com o jeitão de brinquedo do Alex. Aperte o play e ouça.</p>
+      <p>Você vê tudo o que acontece embaixo do chão, em escala real, com o jeitão de brinquedo do Alex.</p>
     </div>
     <div class="videos">
-      <div class="tela"><video src="media/exemplo.mp4" poster="media/cena-2.jpg" controls playsinline preload="none"></video><span class="nome">A cisterna do Alex</span></div>
-      <div class="tela"><video src="media/ponte.mp4" poster="media/ponte-capa.jpg" controls playsinline preload="none"></video><span class="nome">A ponte na montanha</span></div>
+      <div class="tela"><video data-src="media/gif-cisterna.mp4" poster="media/gif-cisterna.webp" autoplay muted loop playsinline preload="none" width="360" height="640"></video><span class="nome">A cisterna do Alex</span></div>
+      <div class="tela"><video data-src="media/gif-ponte.mp4" poster="media/gif-ponte.webp" autoplay muted loop playsinline preload="none" width="360" height="640"></video><span class="nome">A ponte na montanha</span></div>
     </div>
     <div class="galeria">
-      <img src="media/cena-1.jpg" alt="Alex acenando no quintal" loading="lazy">
-      <img src="media/cena-2.jpg" alt="Buraco em corte com caixa d'água" loading="lazy">
-      <img src="media/cena-3.jpg" alt="Paredes de concreto armado" loading="lazy">
-      <img src="media/cena-4.jpg" alt="Cisterna cheia com bomba e chuva" loading="lazy">
+      <img src="media/cena-1.webp" width="360" height="640" decoding="async" alt="Alex acenando no quintal" loading="lazy">
+      <img src="media/cena-2.webp" width="360" height="640" decoding="async" alt="Buraco em corte com caixa d'água" loading="lazy">
+      <img src="media/cena-3.webp" width="360" height="640" decoding="async" alt="Paredes de concreto armado" loading="lazy">
+      <img src="media/cena-4.webp" width="360" height="640" decoding="async" alt="Cisterna cheia com bomba e chuva" loading="lazy">
     </div>
     <p class="verdade">Tudo isso foi feito só conversando com o Claude, com este kit. Nenhum programa de edição, nenhuma linha de código escrita à mão.</p>
   </div>
@@ -285,7 +342,7 @@ footer { padding: 30px 0 40px; text-align: center; font-weight: 700; color: var(
       <p>Cada um com o próprio personagem, o próprio visual e o mesmo jeito fácil de fazer vídeo que você já vai conhecer.</p>
     </div>
     <div class="bonus-topo">
-      <div class="tela"><video src="media/bonus.mp4" poster="media/bonus-capa.jpg" controls playsinline preload="none"></video></div>
+      <div class="tela"><video src="media/bonus.mp4" poster="media/bonus-capa.webp" controls playsinline preload="none"></video></div>
       <div>
         <h3>Você leva 3 kits a mais, cada um com um canal inteiro dentro.</h3>
         <ul>
@@ -299,15 +356,15 @@ footer { padding: 30px 0 40px; text-align: center; font-weight: 700; color: var(
     </div>
     <div class="kits">
       <div class="kit espaco">
-        <img src="media/bonus-espaco.jpg" alt="Planetas abertos ao meio, foguete e buraco negro em neon" loading="lazy">
+        <img src="media/bonus-espaco.webp" width="420" height="747" decoding="async" alt="Planetas abertos ao meio, foguete e buraco negro em neon" loading="lazy">
         <div class="txt"><span class="estilo">Visual neon</span><h3>🚀 Universo em Corte</h3><p>Planetas abertos ao meio, o Sol por dentro, foguete em corte, buraco negro e cometa. Com o <b>Capitão Cosmo</b>.</p></div>
       </div>
       <div class="kit ciencia">
-        <img src="media/bonus-ciencia.jpg" alt="Vulcão de massinha em corte com câmara de magma e fóssil" loading="lazy">
+        <img src="media/bonus-ciencia.webp" width="420" height="747" decoding="async" alt="Vulcão de massinha em corte com câmara de magma e fóssil" loading="lazy">
         <div class="txt"><span class="estilo">Visual de massinha</span><h3>🌋 Ciência em Corte</h3><p>Vulcão em erupção, caverna, gêiser, fóssil de dinossauro e a água escondida embaixo da terra. Com o <b>Professor Faísca</b>.</p></div>
       </div>
       <div class="kit animais">
-        <img src="media/bonus-animais.jpg" alt="Toca do tatu e formigueiro em corte, em desenho" loading="lazy">
+        <img src="media/bonus-animais.webp" width="420" height="747" decoding="async" alt="Toca do tatu e formigueiro em corte, em desenho" loading="lazy">
         <div class="txt"><span class="estilo">Visual de desenho</span><h3>🐾 Bicho em Corte</h3><p>Toca do tatu, formigueiro por dentro, cupinzeiro, coruja-buraqueira e lago com peixes. Com o <b>Zé do Mato</b>.</p></div>
       </div>
     </div>
@@ -427,7 +484,7 @@ footer { padding: 30px 0 40px; text-align: center; font-weight: 700; color: var(
 
 <section class="final">
   <div class="wrap">
-    <img src="img/alex.webp" alt="Alex">
+    <img src="img/alex-p.webp" width="120" height="120" alt="Alex">
     <h2>O Alex já está de capacete. <span style="color:var(--vermelho)">Bora construir?</span></h2>
     <p>Comece hoje com o AlexConstroe e ganhe mais 3 canais de bônus. Se não gostar, 7 dias de garantia.</p>
     <a class="btn vermelho" href="#oferta">Quero meu kit agora</a>
@@ -493,6 +550,14 @@ if (!PRAZO_BONUS) {
   };
   relogio();
 }
+
+// vídeos tipo GIF: só baixam quando chegam perto da tela (e o do topo, logo depois que a página abre)
+const gifs = document.querySelectorAll("video[data-src]");
+const liga = v => { if (v.src) return; v.src = v.dataset.src; v.play().catch(() => {}); };
+const olho = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { liga(e.target); olho.unobserve(e.target); }
+}), { rootMargin: "300px" }) : null;
+addEventListener("load", () => gifs.forEach(v => olho ? olho.observe(v) : liga(v)));
 
 // só um vídeo tocando por vez
 document.querySelectorAll("video[controls]").forEach(v => v.addEventListener("play", () => {
