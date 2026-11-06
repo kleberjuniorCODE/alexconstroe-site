@@ -522,7 +522,7 @@ const PRAZO_BONUS = "";
 
 document.querySelectorAll("[data-valor]").forEach(el => {
   const p = PLANOS[el.dataset.valor];
-  if (!p.parcela) { el.innerHTML = `<b>${p.preco}</b><small>${p.nota || "pagamento único"}</small>`; return; }
+  if (!p.parcela) { el.innerHTML = `<b><span class="rs">R$</span>${p.preco.replace("R$", "").trim()}</b><small>${p.nota || "pagamento único"}</small>`; return; }
   const [vezes, , valor] = p.parcela.split(" ");
   el.innerHTML = `<span class="linha"><span class="vezes">${vezes}</span><b><span class="rs">R$</span>${valor}</b><span class="vista">ou ${p.preco}<br>à vista</span></span>`
     + (p.nota ? `<small>${p.nota}</small>` : "");
