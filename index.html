@@ -261,6 +261,18 @@ footer { padding: 30px 0 40px; text-align: center; font-weight: 700; color: var(
 @media (max-width: 860px) { .selo-bonus, .plano.destaque .selo-bonus { top: -34px; right: -6px; width: 84px; height: 84px; font-size: 13px; } .selo-bonus big { font-size: 21px; } }
 @media (prefers-reduced-motion: reduce) { .celular .presente, .selo-bonus { animation: none; } }
 </style>
+<!-- Meta Pixel: conta as visitas e os cliques nos planos (Gerenciador de Eventos > AlexConstroe - site) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1135860812171448');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1135860812171448&ev=PageView&noscript=1"></noscript>
+<!-- fim do Meta Pixel -->
 </head>
 <body>
 
@@ -537,10 +549,34 @@ document.querySelectorAll("[data-valor]").forEach(el => {
 });
 document.querySelectorAll("[data-preco-barra]").forEach(el => el.textContent = PLANOS.completo.parcela || PLANOS.completo.preco);
 
+// ====== RASTREIO DOS LINKS ======
+// A origem do link que trouxe a pessoa (utm_source, utm_campaign...) segue junto até o checkout da Kiwify,
+// e cada venda aparece com a origem certa. Ex.: alexconstroe.com.br/?utm_source=instagram&utm_medium=bio
+const ORIGEM = new URLSearchParams();
+const daUrl = new URLSearchParams(location.search);
+["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "src", "sck"].forEach(k => {
+  if (daUrl.get(k)) ORIGEM.set(k, daUrl.get(k));
+});
+const comOrigem = link => {
+  if (!ORIGEM.toString()) return link;
+  const u = new URL(link);
+  ORIGEM.forEach((v, k) => u.searchParams.set(k, v));
+  return u.toString();
+};
+const pixel = (...args) => { if (window.fbq) fbq(...args); };
+pixel("track", "ViewContent", { content_name: "Kit AlexConstroe" });
+
 const aviso = document.getElementById("aviso");
 document.querySelectorAll("[data-plano]").forEach(a => {
-  const link = PLANOS[a.dataset.plano].link;
-  if (link) { a.href = link; return; }
+  const plano = a.dataset.plano, p = PLANOS[plano];
+  if (p.link) {
+    a.href = comOrigem(p.link);
+    // clique no plano vira o evento "CliqueNoPlano" no Gerenciador de Eventos (a venda é contada pela Kiwify)
+    a.addEventListener("click", () => pixel("trackCustom", "CliqueNoPlano", {
+      plano, value: Number(p.preco.replace(/\D/g, "")), currency: "BRL",
+    }));
+    return;
+  }
   a.addEventListener("click", e => {
     e.preventDefault();
     aviso.classList.add("on");
