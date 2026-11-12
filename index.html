@@ -291,7 +291,7 @@ fbq('track', 'PageView');
 <!-- fim do Meta Pixel -->
 </head>
 <body>
-<div class="promo-topo" data-promo-so><big data-promo-nome></big><span>Só hoje, até <b data-promo-off-max></b> off em todos os planos</span><span>termina em <span class="rel" data-promo-relogio></span></span><a href="#oferta">Ver preços</a></div>
+<div class="promo-topo" data-promo-so><big data-promo-nome></big><span>Só hoje, até <b data-promo-off-max></b> off em todos os planos</span><span data-promo-tempo>termina em <span class="rel" data-promo-relogio></span></span><a href="#oferta">Ver preços</a></div>
 
 <div class="wrap">
   <header class="topo">
@@ -568,12 +568,17 @@ const PROMO = {
     premium:  { preco: "R$ 111", link: "https://pay.kiwify.com.br/MG24vtH" },
   },
 };
+// Link escondido (pro post do 11.11): alexconstroe.com.br/1111 abre o site com ?oferta=1111,
+// a promoção fica ligada sempre, sem relógio e sem "só hoje". Pra desligar: apague a linha abaixo (ou deixe "").
+const PROMO_LINK = "1111";
 // ==========================
 
 const reais = s => Number(s.replace(/[^\d,]/g, "").replace(",", "."));
 const PROMO_TESTE = new URLSearchParams(location.search).get("promo") === "teste";
 const promoIni = new Date(PROMO.de), promoFim = new Date(PROMO.ate);
-const promoValendo = PROMO_TESTE || (Date.now() >= promoIni && Date.now() < promoFim);
+const PROMO_FIXA = !!PROMO_LINK && new URLSearchParams(location.search).get("oferta") === PROMO_LINK;
+if (PROMO_FIXA) { const r = document.createElement("meta"); r.name = "robots"; r.content = "noindex"; document.head.appendChild(r); }
+const promoValendo = PROMO_TESTE || PROMO_FIXA || (Date.now() >= promoIni && Date.now() < promoFim);
 const EM_PROMO = {};
 if (promoValendo) Object.entries(PROMO.planos).forEach(([k, pp]) => {
   if (!pp.preco || !PLANOS[k] || (!pp.link && !PROMO_TESTE)) return;
@@ -588,15 +593,23 @@ if (temPromo) {
   document.querySelectorAll("[data-promo-nome]").forEach(el => el.textContent = "🔥 " + PROMO.nome);
   document.querySelectorAll("[data-promo-off-max]").forEach(el => el.textContent = Math.max(...Object.values(EM_PROMO)) + "%");
   const chip = document.querySelector("[data-promo-chip]");
-  if (chip) chip.textContent = `🔥 ${PROMO.nome.replace("PROMOÇÃO ", "")}: Kit por ${PLANOS.completo.preco} só hoje`;
+  if (chip) chip.textContent = `🔥 ${PROMO.nome.replace("PROMOÇÃO ", "")}: Kit por ${PLANOS.completo.preco}` + (PROMO_FIXA ? "" : " só hoje");
   const u = document.getElementById("urgencia");
-  if (u) u.innerHTML = `<b>🔥 ${PROMO.nome}: só hoje</b>`
+  if (PROMO_FIXA) {
+    document.querySelectorAll("[data-promo-tempo]").forEach(el => el.remove());
+    document.querySelectorAll(".promo-topo span:not([data-promo-tempo])").forEach(el => {
+      if (el.textContent.startsWith("Só hoje")) el.innerHTML = `Preço especial do post: até <b>${Math.max(...Object.values(EM_PROMO))}%</b> off em todos os planos`;
+    });
+    if (u) u.innerHTML = `<b>🔥 ${PROMO.nome}: preço especial</b>`
+      + `<span>Você chegou pelo link do post e ainda pega o preço do 11.11. E o bônus dos <b>3 kits novos</b> continua no <b>Kit AlexConstroe</b> e no <b>Premium</b>.</span>`;
+  } else if (u) u.innerHTML = `<b>🔥 ${PROMO.nome}: só hoje</b>`
     + `<span>Os menores preços do kit, e o bônus dos <b>3 kits novos</b> continua no <b>Kit AlexConstroe</b> e no <b>Premium</b>. Acaba à meia-noite.</span>`
     + `<div class="relogio" data-promo-relogio></div>`;
-  const fim = PROMO_TESTE && Date.now() >= promoFim ? Date.now() + 36e5 : +promoFim;
+  const fim = PROMO_FIXA ? 0 : PROMO_TESTE && Date.now() >= promoFim ? Date.now() + 36e5 : +promoFim;
   const dd = n => String(n).padStart(2, "0");
   const tic = () => {
     const falta = fim - Date.now();
+    if (PROMO_FIXA) return;
     if (falta <= 0) { if (!PROMO_TESTE) location.reload(); return; }
     const h = Math.floor(falta / 36e5), m = Math.floor(falta / 6e4) % 60, s = Math.floor(falta / 1e3) % 60;
     document.querySelectorAll("[data-promo-relogio]").forEach(el => el.textContent = `${dd(h)}h ${dd(m)}m ${dd(s)}s`);
@@ -609,7 +622,7 @@ if (temPromo) {
 
 document.querySelectorAll("[data-valor]").forEach(el => {
   const p = PLANOS[el.dataset.valor];
-  if (p.promo) { el.innerHTML = `<span class="de">de ${p.de}</span><b><span class="rs">R$</span>${p.preco.replace("R$", "").trim()}</b><small>${p.nota || "pagamento único"}</small><span class="off">-${EM_PROMO[el.dataset.valor]}% só hoje</span>`; return; }
+  if (p.promo) { el.innerHTML = `<span class="de">de ${p.de}</span><b><span class="rs">R$</span>${p.preco.replace("R$", "").trim()}</b><small>${p.nota || "pagamento único"}</small><span class="off">-${EM_PROMO[el.dataset.valor]}%${PROMO_FIXA ? " off" : " só hoje"}</span>`; return; }
   if (!p.parcela) { el.innerHTML = `<b><span class="rs">R$</span>${p.preco.replace("R$", "").trim()}</b><small>${p.nota || "pagamento único"}</small>`; return; }
   const [vezes, , valor] = p.parcela.split(" ");
   el.innerHTML = `<span class="linha"><span class="vezes">${vezes}</span><b><span class="rs">R$</span>${valor}</b><span class="vista">ou ${p.preco}<br>à vista</span></span>`
